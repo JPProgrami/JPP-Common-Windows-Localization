@@ -104,13 +104,22 @@ namespace JPP.Common.Windows.Localization
                     string beforeequals = line.Substring(0, line.IndexOf('=')).Trim();
                     string afterequals = line.Substring(line.IndexOf('=') + 1).Trim();
                     string[] liness = beforeequals.Split('.');
-                    if(liness.Length>2)
+                   /* if(liness.Length>2)
                     {
                         throw new LclFileException("Illegal specifier at " + line_count + ".");
-                    }
+                    }*/
                     if (liness.Length > 1)
                     {
-                        temp_dict.Add(new DictionaryItem(liness[0], liness[1], afterequals));
+                        string temp = "";
+                        for(int i=1;i<liness.Length;i++)
+                        {
+                            temp += liness[i];
+                            if(i<liness.Length-1)
+                            {
+                                temp += ".";
+                            }
+                        }
+                        temp_dict.Add(new DictionaryItem(liness[0], temp, afterequals));
                     }
                     else
                     {
