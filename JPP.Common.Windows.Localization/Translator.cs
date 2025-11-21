@@ -15,11 +15,20 @@ namespace JPP.Common.Windows.Localization
 
         public Langset Langset { get { return this.langset; } set { this.langset = value; } }
 
+        /// <summary>
+        /// Instantiates a new form translator based on a langset.
+        /// </summary>
+        /// <param name="langset">Langset to base the translator on.</param>
         public Translator(Langset langset)
         {
             this.langset = langset;
         }
 
+        /// <summary>
+        /// FOR INTERNAL USE: Sets the assumed property of an object.
+        /// </summary>
+        /// <param name="c">Object to set the property for.</param>
+        /// <param name="text">Text to display.</param>
         void set_assumed_property(Object c,string text)
         {
             if (c is TextBox)
@@ -56,6 +65,13 @@ namespace JPP.Common.Windows.Localization
             }
         }
 
+        /// <summary>
+        /// FOR INTERNAL USE: Sets the assumed property of a group object.
+        /// Due to objects such as TabControls, GroupBoxes etc. behaving differently.
+        /// </summary>
+        /// <param name="c">Group object.</param>
+        /// <param name="key_index">String key or numeric index to access the element.</param>
+        /// <param name="text">Text to display.</param>
         void set_group_assumed_property(Object c, Object key_index, string text)
         {
             if(key_index is int)
@@ -107,15 +123,10 @@ namespace JPP.Common.Windows.Localization
             }
         }
 
-        private List<Object> GetFormObjects(Form f)
-        {
-            List<Object> ret = new List<Object>();
-            foreach(FieldInfo fieldinfo in f.GetType().GetFields())
-            {
-                ret.Add(fieldinfo.GetValue(f));
-            }
-            return ret;
-        }
+        /// <summary>
+        /// Translates the form to the given langset.
+        /// </summary>
+        /// <param name="form">Form to translate.</param>
         public void TranslateForm(Form form)
         {
             var Form_dict = this.langset.Dictionary.FindAll(x=>x.Form==form.Name);
@@ -160,7 +171,13 @@ namespace JPP.Common.Windows.Localization
             }
         }
 
-        public static object GetNestedObject(object root, string path)
+        /// <summary>
+        /// FOR INTERNAL USE: Gets the nested object from a string of access operations.
+        /// </summary>
+        /// <param name="root">Root object to start descending from.</param>
+        /// <param name="path">Path towards the object with access operations.</param>
+        /// <returns>Given object or null.</returns>
+        static object GetNestedObject(object root, string path)
         {
             string[] parts = path.Split('.','[');
             object currentObject = root;
@@ -234,6 +251,13 @@ namespace JPP.Common.Windows.Localization
             return currentObject;
         }
 
+
+        /// <summary>
+        /// FOR INTERNAL USE : Gets the element at the index of the IEnumerable.
+        /// </summary>
+        /// <param name="enumerable">Enumerable to index.</param>
+        /// <param name="index">Index of the element.</param>
+        /// <returns>The element as object or null.</returns>
         private static object GetElementAt(IEnumerable enumerable, int index)
         {
             var enumerator = enumerable.GetEnumerator();
@@ -247,6 +271,10 @@ namespace JPP.Common.Windows.Localization
             return enumerator.Current;
         }
 
+        /// <summary>
+        /// Translates all forms in a given application.
+        /// </summary>
+        /// <param name="forms">Forms to translate.</param>
         public void TranslateApplication(List<Form> forms)
         {
             foreach(Form name in forms)

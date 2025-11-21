@@ -104,10 +104,7 @@ namespace JPP.Common.Windows.Localization
                     string beforeequals = line.Substring(0, line.IndexOf('=')).Trim();
                     string afterequals = line.Substring(line.IndexOf('=') + 1).Trim();
                     string[] liness = beforeequals.Split('.');
-                   /* if(liness.Length>2)
-                    {
-                        throw new LclFileException("Illegal specifier at " + line_count + ".");
-                    }*/
+
                     if (liness.Length > 1)
                     {
                         string temp = "";
@@ -157,6 +154,7 @@ namespace JPP.Common.Windows.Localization
         {
             return dict.Find(x => x.Form == form_name && x.Control == control_name);
         }
+
         /// <summary>
         /// Finds a dictionary string for the string name given.
         /// </summary>
