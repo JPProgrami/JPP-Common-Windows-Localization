@@ -119,7 +119,8 @@ namespace JPP.Common.Windows.Localization
         public void TranslateForm(Form form)
         {
             var Form_dict = this.langset.Dictionary.FindAll(x=>x.Form==form.Name);
-            foreach(DictionaryItem di in this.langset.Dictionary)
+            ToolTip tt = new ToolTip();
+            foreach (DictionaryItem di in this.langset.Dictionary)
             {
                 if (string.IsNullOrEmpty(di.Control))
                 {
@@ -127,10 +128,12 @@ namespace JPP.Common.Windows.Localization
                 }
                 else
                 {
-                    if (di.Control.Contains("ToolTip") || di.Control.Contains("tooltip"))
+                    if (di.Control.Contains("ToolTip") || di.Control.Contains("tooltip") || di.Control.Contains("toolTip") || di.Control.Contains("TOOLTIP") || di.Control.Contains("TOOL_TIP"))
                     {
                         string control = di.Control.Substring(0, di.Control.LastIndexOf('.'));
                         object c = GetNestedObject(form, control);
+
+                        tt.SetToolTip((Control)c, di.Text);
                         
                     }
                     else
